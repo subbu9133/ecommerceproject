@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <title>Payment</title>
+</head>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img th:src="@{/images/logo1.png}"  src="../static/images/logo1.png" width="60" height="50" class="d-inline-block align-top" alt="Logo"/>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto"></ul>
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/}" href="#">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/shop}" href="#">Shop</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/basket}" href="#">
+                        Basket <span class="badge badge-pill badge-primary" th:text="${basketSize != null ? basketSize : 0}"></span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/admin}" href="#">Admin</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<h1>Payment Details</h1>
+<form action="#" th:action="@{/shop/processPayment}" method="post">
+    <div class="form-group">
+        <label for="cardName">Cardholder Name</label>
+        <input type="text" class="form-control" id="cardName" name="cardName" placeholder="Enter Cardholder Name" required>
+    </div>
+    <div class="form-group">
+        <label for="cardNumber">Card Number</label>
+        <input type="text" class="form-control" id="cardNumber" name="cardNumber" placeholder="Enter Card Number" required>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="expiryDate">Expiry Date</label>
+            <input type="text" class="form-control" id="expiryDate" name="expiryDate" placeholder="MM/YY" required>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="cvv">CVV</label>
+            <input type="text" class="form-control" id="cvv" name="cvv" placeholder="Enter CVV" required>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit Payment</button>
+</form>
+</div>
+</body>
+</html>
