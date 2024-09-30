@@ -25,7 +25,6 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                // Define deployment steps, e.g., SCP to a server or Docker commands
                 echo 'Deploying application...'
             }
         }
