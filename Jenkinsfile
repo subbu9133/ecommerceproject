@@ -2,42 +2,32 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone Repository') {
-            steps {
-                // Checkout source code from the repository
-                git branch: 'master', url: 'https://github.com/subbu9133/ecommerceproject.git'
-            }
-        }
-
         stage('Build') {
             steps {
-                // Run Maven build
-                sh 'mvn clean package'
+                script {
+                    // Ensure Maven is installed and available
+                    sh 'mvn clean package'
+                }
             }
         }
-
         stage('Test') {
             steps {
-                // Run tests
-                sh 'mvn test'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo 'Deploying application...'
+                script {
+                    // Run tests
+                    sh 'mvn test'
+                }
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline completed successfully!'
+            echo 'Build and tests successful!'
         }
         failure {
-    }        echo 'Pipeline failed. Check the logs for more details.'
-
+            script {
+                echo 'Build or tests failed.'
+            }
+        }
+    }
 }
-}
-
-
