@@ -10,16 +10,17 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Clean and package the project
-                    sh 'mvn clean package'
+                    // Clean, compile, and package the project
+                    sh 'nohup mvn clean compile package'
                 }
             }
         }
+
         stage('Test') {
             steps {
                 script {
                     // Run tests
-                    sh 'mvn test'
+                    sh 'nohup mvn test'
                 }
             }
         }
@@ -28,7 +29,7 @@ pipeline {
             steps {
                 script {
                     // Deploy the application (modify as necessary for your deployment)
-                    sh 'mvn deploy'
+                    sh 'nohup mvn deploy -DskipTests' // Skip tests during deployment
                 }
             }
         }
@@ -36,15 +37,15 @@ pipeline {
 
     post {
         success {
-            echo 'Build and tests successful!'
+            echo 'Build, tests, and deployment successful!'
             // Optionally notify stakeholders, e.g., Slack, email
-            // slackSend(channel: '#your-channel', message: 'Build and tests successful!')
+            // slackSend(channel: '#your-channel', message: 'Build, tests, and deployment successful!')
         }
         failure {
             script {
-                echo 'Build or tests failed.'
+                echo 'Build, tests, or deployment failed.'
                 // Optionally send notifications for failure
-                // slackSend(channel: '#your-channel', message: 'Build or tests failed.')
+                // slackSend(channel: '#your-channel', message: 'Build, tests, or deployment failed.')
             }
         }
     }
