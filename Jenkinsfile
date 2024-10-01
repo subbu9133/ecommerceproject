@@ -2,51 +2,48 @@ pipeline {
     agent any
 
     tools {
-        // Specify Maven installation
-        maven 'Maven 3.9.9' // Replace with your Maven installation name
+        jdk 'JDK 17'
+        maven 'Maven 3.9.9'
+    }
+
+    environment {
+        // Optional: Define environment variables if needed
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                // Use the 'credentialsId' parameter to refer to stored Jenkins credentials
+                git branch: 'master', url: 'https://github.com/subbu9133/ecommerceproject.git', credentialsId: 'ff5f3856-0038-4807-86dc-9837f45c0bbf'
+            }
+        }
+
         stage('Build') {
             steps {
-                script {
-                    // Clean, compile, and package the project
-                    sh 'nohup mvn clean compile package'
-                }
+                sh 'mvn clean package -DskipTests'
             }
         }
 
         stage('Test') {
             steps {
-                script {
-                    // Run tests
-                    sh 'nohup mvn test'
-                }
+                sh 'mvn test'
             }
         }
 
         stage('Deploy') {
             steps {
-                script {
-                    // Deploy the application (modify as necessary for your deployment)
-                    sh 'nohup mvn deploy -DskipTests' // Skip tests during deployment
-                }
+                echo 'Deploying the application...'
+                // Add deployment steps here
             }
         }
     }
 
     post {
         success {
-            echo 'Build, tests, and deployment successful!'
-            // Optionally notify stakeholders, e.g., Slack, email
-            // slackSend(channel: '#your-channel', message: 'Build, tests, and deployment successful!')
+            echo 'Pipeline completed successfully!'
         }
         failure {
-            script {
-                echo 'Build, tests, or deployment failed.'
-                // Optionally send notifications for failure
-                // slackSend(channel: '#your-channel', message: 'Build, tests, or deployment failed.')
-            }
-        }
-    }
+            echo 'Pipeline failed. Check the logs for more details.'
+
+}}
 }
