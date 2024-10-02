@@ -23,20 +23,44 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh "mvn clean package -DskipTests -Dapp.name=${env.APP_NAME} -Denv.type=${env.ENV_TYPE}"
+                script {
+                    if (isUnix()) {
+                        // Unix-based environment (Linux, macOS)
+                        sh "mvn clean package -DskipTests -Dapp.name=${env.APP_NAME} -Denv.type=${env.ENV_TYPE}"
+                    } else {
+                        // Windows environment
+                        bat "mvn clean package -DskipTests -Dapp.name=${env.APP_NAME} -Denv.type=${env.ENV_TYPE}"
+                    }
+                }
             }
         }
 
         stage('Test') {
             steps {
-                sh 'mvn test'
+                script {
+                    if (isUnix()) {
+                        // Unix-based environment (Linux, macOS)
+                        sh 'mvn test'
+                    } else {
+                        // Windows environment
+                        bat 'mvn test'
+                    }
+                }
             }
         }
 
         stage('Deploy') {
             steps {
-                // Add your deployment steps here, using environment variables as needed
-                sh "mvn deploy -DskipTests -Ddeployment.target=${env.ENV_TYPE}"
+                // Add your deployment steps here
+                script {
+                    if (isUnix()) {
+                        // Unix-based environment (Linux, macOS)
+                        sh "mvn deploy -DskipTests -Ddeployment.target=${env.ENV_TYPE}"
+                    } else {
+                        // Windows environment
+                        bat "mvn deploy -DskipTests -Ddeployment.target=${env.ENV_TYPE}"
+                    }
+                }
             }
         }
     }
